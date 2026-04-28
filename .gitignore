@@ -10,6 +10,7 @@ build/
 dist/
 wheels/
 *.egg-info/
+olmoe.egg-info/
 .eggs/
 pip-wheel-metadata/
 
@@ -37,6 +38,7 @@ htmlcov/
 logs/
 tmp/
 temp/
+*_matches.csv
 
 # Local env / secrets
 .env
@@ -57,8 +59,9 @@ desktop.ini
 
 # Local ML artifacts
 models/
-runs/
+runs/*
 
 # Keep small local preview samples tracked
 !runs/local_preview_data/
+runs/local_preview_data/*
 !runs/local_preview_data/*.txt

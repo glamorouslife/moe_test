@@ -1,0 +1,5 @@
+Luxembourg has three official languages and a multilingual society.
+Cross-lingual transfer can improve low-resource language modeling.
+This sample corpus is only for pipeline smoke tests, not for final training.
+This local sample data is used for a quick run.
+The model should learn stable token patterns across related languages.

@@ -1,0 +1,5 @@
+Luxemburg hat drei Amtssprachen und eine mehrsprachige Gesellschaft.
+Cross-lingualer Transfer kann Low-Resource-Sprachen verbessern.
+Dieses Korpus ist nur fuer Pipeline-Smoketests, nicht fuer finales Training.
+Diese lokalen Daten werden fuer einen schnellen Lauf verwendet.
+Das Modell soll stabile Tokenmuster ueber verwandte Sprachen lernen.

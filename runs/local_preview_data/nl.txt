@@ -1,0 +1,5 @@
+Luxemburg heeft drie officiele talen en een meertalige samenleving.
+Cross-linguale transfer kan low-resource taalmodellering verbeteren.
+Deze corpusset is alleen voor pipeline-smoketests, niet voor eindtraining.
+Deze lokale data wordt gebruikt voor een snelle run.
+Het model moet stabiele tokenpatronen over verwante talen leren.
