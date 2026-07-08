@@ -36,7 +36,7 @@ def clear_routing_cache() -> None:
 
 def set_current_lang_tags(lang_tags: list[str] | None) -> None:
     global _CURRENT_LANG_TAGS
-    _CURRENT_LANG_TAGS = lang_tags
+    _CURRENT_LANG_TAGS = list(lang_tags) if lang_tags is not None else None
 
 
 def snapshot_routing_cache() -> dict[int, list[dict[str, Any]]]:
@@ -106,6 +106,9 @@ def attach_routing_hooks(
                 lang_tags = list(_CURRENT_LANG_TAGS)
 
             probs = F.softmax(_reshape_router_logits(router_logits, batch_size).float(), dim=-1)
+            
+            if probs.shape[0] != len(lang_tags):
+                lang_tags = ["unknown"] * probs.shape[0]
 
             if detach:
                 probs_to_store = probs.detach().cpu()
