@@ -114,7 +114,9 @@ SAVE_EVERY = 200
 # Stability-first low-VRAM policy. Enable lm_head only if training is numerically stable.
 LOW_VRAM_TRAIN_LM_HEAD = False
 
-ALIGN_LAYERS = list(range(8, 21))
+# OLMoE-1B-7B has 16 layers (0-15). Middle band 5-10 is most language-agnostic,
+# per the surface->meaning->output hypothesis. range(5,11) = layers 5,6,7,8,9,10.
+ALIGN_LAYERS = list(range(5, 11))
 ALIGN_LAMBDA = 0.1
 ALIGN_DISTANCE = "jsd"  # jsd | cosine
 
