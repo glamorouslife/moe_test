@@ -331,18 +331,35 @@ def alignment_loss_fn(
                 if layer not in stats_a or layer not in stats_b:
                     continue
 
-                dist_a = stats_a[layer].mean(dim=0)
-                dist_b = stats_b[layer].mean(dim=0)
+                mat_a = stats_a[layer]   # [S, 64] — one row per sentence in language A
+                mat_b = stats_b[layer]   # [S, 64] — one row per sentence in language B
 
-                if ALIGN_DISTANCE == "cosine":
-                    distance = 1.0 - F.cosine_similarity(
-                        dist_a.unsqueeze(0),
-                        dist_b.unsqueeze(0),
-                    ).squeeze(0)
-                else:
-                    distance = _js_divergence(dist_a, dist_b)
+                # Pairing is positional: row i of A is the translation of row i of B.
+                # (Verified: both come from the same pair_batch, cached in the same order.)
+                # Only compare as many pairs as both sides actually have.
+                n_pairs = min(mat_a.shape[0], mat_b.shape[0])
+                if n_pairs == 0:
+                    continue
 
+                pair_distances: list[torch.Tensor] = []
+                for i in range(n_pairs):
+                    dist_a = mat_a[i]   # [64] — sentence i in language A
+                    dist_b = mat_b[i]   # [64] — sentence i in language B (its translation)
+
+                    if ALIGN_DISTANCE == "cosine":
+                        d = 1.0 - F.cosine_similarity(
+                            dist_a.unsqueeze(0),
+                            dist_b.unsqueeze(0),
+                        ).squeeze(0)
+                    else:
+                        d = _js_divergence(dist_a, dist_b)
+
+                    pair_distances.append(d)
+
+                # Average the per-pair distances (compare first, then average).
+                distance = torch.stack(pair_distances).mean()
                 distances.append(distance)
+
 
     if not distances:
         device = next(iter(routing_stats_langs.values()))[next(iter(align_layers))].device
